@@ -147,6 +147,10 @@ public class GameEngine implements Runnable {
             }
             lastTime = now;
             render();
+            if (SMBAIManager.autoStart) {
+            	selectMapViaKeyboard();
+            	SMBAIManager.autoStart = false;
+            }
         }
     }
 
@@ -230,7 +234,7 @@ public class GameEngine implements Runnable {
             } else if (input == ButtonAction.FIRE) {
                 mapManager.fire(this);
             } else if (input == ButtonAction.PAUSE_RESUME) {
-                SaveData.save(SMBAIManager.fileName);
+                SaveData.save(SMBAIManager.pushFile);
                 System.exit(0);
             }
         } else if(gameStatus == GameStatus.GAME_OVER){

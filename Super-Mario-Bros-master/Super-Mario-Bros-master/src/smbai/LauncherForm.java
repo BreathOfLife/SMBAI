@@ -1,9 +1,11 @@
 package smbai;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -40,13 +42,13 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private JLabel randomAgentsL = new JLabel("Do you want to generate a full new set of agents?");
 	private JCheckBox randomAgentsC = new JCheckBox();
 	private boolean randomAgentsA;
-	private JLabel saveFilePullL = new JLabel("If you want to pull them from a save, please enter the name of the txt file (Leave blank if checked previous box):");
+	private JLabel saveFilePullL = new JLabel("If you want to pull them from a save please enter the name of the txt file (Leave blank if checked previous box):");
 	private JTextField saveFilePullT = new JTextField();
 	private String saveFilePullA;
 	private JLabel overwriteL = new JLabel("When the program closes do you want to save to the same txt file and overwrite it?");
 	private JCheckBox overwriteC = new JCheckBox();
 	private boolean overwriteA;
-	private JLabel saveFilePushL = new JLabel("If not, what is the new txt file you want to save it to (Leave blank if checked previous box)?");
+	private JLabel saveFilePushL = new JLabel("If not what is the new txt file you want to save it to (Leave blank if checked previous box)?");
 	private JTextField saveFilePushT = new JTextField();
 	private String saveFilePushA;
 	private JLabel numAgentsL = new JLabel("Number of agents per generation:");
@@ -58,11 +60,11 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private JLabel geneFlowL = new JLabel("Gene Flow Factor (Should be a decimal from 0-1):");
 	private JTextField geneFlowT = new JTextField();
 	private double geneFlowA;
-	private JLabel selectGeneFlowFactNoteL = new JLabel("*GENE FLOW + SELECTIVITY SHOULD BE <= 1*");
+	private JLabel selectGeneFlowFactNoteL = new JLabel("*GENE FLOW + SELECTIVITY SHOULD BE LESS THAN OR EQUAL TO 1*");
 	private JLabel numGenL = new JLabel("Number of generations (Set 0 if desiring to proceed indefinitely):");
 	private JTextField numGenT = new JTextField();
 	private int numGenA;
-	private JLabel escNoteL = new JLabel("*Remember, program can be paused and saved at any point by pressing ESC*");
+	private JLabel escNoteL = new JLabel("*Remember program can be paused and saved at any point by pressing ESC*");
 	private JButton runB = new JButton("Run SMBAI");
 	private JLabel errorText = new JLabel();
 	
@@ -81,13 +83,17 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(saveFilePushT);
 		components.add(numAgentsL);
 		components.add(numAgentsT);
+		numAgentsT.setText("100");
 		components.add(selectFactL);
 		components.add(selectFactT);
+		selectFactT.setText(".2");
 		components.add(geneFlowL);
 		components.add(geneFlowT);
+		geneFlowT.setText(".1");
 		components.add(selectGeneFlowFactNoteL);
 		components.add(numGenL);
 		components.add(numGenT);
+		numGenT.setText("0");
 		components.add(escNoteL);
 		components.add(runB);
 		components.add(errorText);
@@ -99,13 +105,25 @@ public class LauncherForm extends JFrame implements ActionListener{
 		
 		c = getContentPane();
         c.setLayout(new FlowLayout(FlowLayout.CENTER,5,20));
+        c.setBackground(new Color(4,107,122));
         
         for (JComponent comp : components) {
-        	comp.setFont(new Font("Arial", Font.PLAIN, 20));
+        	try {
+				if (comp.getClass().equals(saveFilePullT.getClass())) {
+	        		comp.setPreferredSize((new Dimension(50,25)));
+	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(25f));
+	        		comp.setForeground(new Color(255,109,249));
+	        	} else {
+	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(20f));
+	        		comp.setForeground(new Color(99,48,122));
+	        	}
+				comp.setBackground(new Color(4,107,122));
+			} catch (FontFormatException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         	c.add(comp);
-        	if (comp.getClass().equals(saveFilePullT.getClass())) {
-        		comp.setPreferredSize((new Dimension(50,25)));
-        	}
         }
         
         runB.addActionListener(this);
@@ -115,7 +133,6 @@ public class LauncherForm extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Action Occured");
 		if (e.getSource() == runB) {
 			errorText.setText("");
 			if (checkTypeValidity()) {
@@ -137,7 +154,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 		} catch (StringIndexOutOfBoundsException e) {
 			saveFilePullA = saveFilePullA + ".txt";
 		}
-		if (overwriteA) {
+		if (overwriteA && !saveFilePullA.equals(".txt")) {
 			saveFilePushA = saveFilePullA;
 		} else {
 			try {
@@ -153,10 +170,12 @@ public class LauncherForm extends JFrame implements ActionListener{
 
 
 	private boolean answerSensibility() {
-		File f = new File(saveFilePullA);
-		if (!(isPathValid(saveFilePullA) && f.exists())) {
-			errorText.setText("File Error (The save file to pull from is invalid)");
-			return false;
+		if (!randomAgentsA) {
+			File f = new File(saveFilePullA);
+			if (!(isPathValid(saveFilePullA) && f.exists())) {
+				errorText.setText("File Error (The save file to pull from is invalid)");
+				return false;
+			}
 		}
 		if (!isPathValid(saveFilePushA)) {
 			errorText.setText("File Error (The save file to push to is invalid)");
@@ -189,13 +208,13 @@ public class LauncherForm extends JFrame implements ActionListener{
 		}
 		try {
 			randomAgentsA = randomAgentsC.isSelected();
-			saveFilePullA = saveFilePullT.getText();
+			saveFilePullA = saveFilePullT.getText().trim();
 			overwriteA = overwriteC.isSelected();
-			saveFilePushA = saveFilePushT.getText();
-			numAgentsA = Integer.parseInt(numAgentsT.getText());
-			selectFactA = Double.parseDouble(selectFactT.getText());
-			geneFlowA = Double.parseDouble(geneFlowT.getText());
-			numGenA = Integer.parseInt(numGenT.getText());
+			saveFilePushA = saveFilePushT.getText().trim();
+			numAgentsA = Integer.parseInt(numAgentsT.getText().trim());
+			selectFactA = Double.parseDouble(selectFactT.getText().trim());
+			geneFlowA = Double.parseDouble(geneFlowT.getText().trim());
+			numGenA = Integer.parseInt(numGenT.getText().trim());
 			if (selectFactA > 1 || selectFactA < 0) {
 				errorText.setText("Validity Error (Selectivity Factor must be between 1 and 0)");
 				return false;

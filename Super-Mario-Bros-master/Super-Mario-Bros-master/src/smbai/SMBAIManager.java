@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import manager.GameEngine;
 
 public class SMBAIManager {
-	public static final int agentQuantityPerGen = 100;
-	public static final double selectivityFactor = 0.2;
-	public static final double geneFlowFactor = 0.1; //What percent of each new population (after generation 1) should be randomly generated from scratch
+	public static int agentQuantityPerGen = 100;
+	public static double selectivityFactor = 0.2;
+	public static double geneFlowFactor = 0.1; //What percent of each new population (after generation 1) should be randomly generated from scratch
 	public static final int numNewRandomStrats = 1; //Number of random random strats that should be added to each hybrid agent
 	public static final char[] trigTypeList = new char[] {'e','r','f','c'}; //Enemy, Right Wall, Floor, Ceiling
 	public static final char[] actionTypeList = new char[] {'r','l','j','f'}; //Walk Right, Walk Left, Jump, Fire
 	private static ArrayList<Agent> agentList = new ArrayList<Agent>();
 	private static ArrayList<Agent> survivingList = new ArrayList<Agent>();
 	private static int activeAgentIndex = 0;
+	private static int activeGenIndex = 0;
 	
 	/*In each newly created agent population there are 3 types of agents, 
 	 * purebred that are direct descendants of the successful parents with no manipulation, 
@@ -23,18 +24,32 @@ public class SMBAIManager {
 	
 	public static String pullFile;
 	public static String pushFile;
-	public static boolean readFromSave = true;
+	private static boolean readFromSave;
+	private static int totalGens;
+	public static boolean autoStart = true;
 	
 	public SMBAIManager() {
 		ButtonExecution.init();
 		getLauncherInput();
 		if (readFromSave) {
-			ReadData.read(fileName);
+			ReadData.read(pullFile);
 		} else {
 			createRandomAgents();
 		}
 	}
 	
+	private void getLauncherInput() {
+		pullFile = SMBAILauncher.pullFile;
+		pushFile = SMBAILauncher.pushFile;
+		readFromSave = SMBAILauncher.pullSave;
+		agentQuantityPerGen = SMBAILauncher.agentPerGen;
+		selectivityFactor = SMBAILauncher.selectFact;
+		geneFlowFactor = SMBAILauncher.geneFlow;
+		totalGens = SMBAILauncher.gens;
+		
+		
+	}
+
 	private void createRandomAgents() {
 		for (int agentCreationIndex = 0; agentCreationIndex < agentQuantityPerGen; agentCreationIndex++) {
 			agentList.add(new Agent(RandomHandler.hypRandI(5)));
@@ -142,6 +157,11 @@ public class SMBAIManager {
 			activeAgentIndex++;
 		} else {
 			reGeneration();
+			activeGenIndex++;
+			if ((activeGenIndex >= totalGens) && totalGens != 0) {
+				SaveData.save(pushFile);
+                System.exit(0);
+			}
 		}
 	}
 	
