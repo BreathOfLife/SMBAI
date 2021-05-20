@@ -96,7 +96,6 @@ public class SMBAIManager {
 		for (int i = agentList.size(); i < agentQuantityPerGen; i++) {
 			agentList.add(selectParentTraits());
 		}
-		activeAgentIndex = 0;
 	}
 
 	private void geneFlow() {
@@ -153,10 +152,12 @@ public class SMBAIManager {
 	}
 
 	public void nextAI() {
+		ButtonExecution.reset();
 		if ((activeAgentIndex + 1) < agentList.size()) {
 			activeAgentIndex++;
 		} else {
 			reGeneration();
+			activeAgentIndex = 0;
 			activeGenIndex++;
 			if ((activeGenIndex >= totalGens) && totalGens != 0) {
 				SaveData.save(pushFile);

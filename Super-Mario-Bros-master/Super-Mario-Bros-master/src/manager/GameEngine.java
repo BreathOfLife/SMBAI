@@ -355,9 +355,9 @@ public class GameEngine implements Runnable {
         return mapManager;
     }
 
-    public static void main(String... args) {
+    /*public static void main(String... args) {
         gameStart();
-    }
+    }*/
 
     public static void gameStart() {
     	gameEngine = new GameEngine();

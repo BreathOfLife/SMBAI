@@ -57,6 +57,7 @@ public class ButtonExecution {
 				timeLeftInAction[timeLeftIndex] -= diffTime;
 				if (timeLeftInAction[timeLeftIndex] <= 0) {
 					actionHeld[timeLeftIndex] = false;
+					timeLeftInAction[timeLeftIndex] = -1;
 					if (timeLeftIndex < 2) {
 						GameEngine.gameEngine.inputManager.virtualNotifyInput(ButtonAction.ACTION_COMPLETED_X);
 					}
@@ -90,5 +91,12 @@ public class ButtonExecution {
 		if (actionHeld[3]) {
 			Fire();
 		}
+	}
+	
+	public static void reset() {
+		timeLeftInAction[0] = -1;
+		timeLeftInAction[1] = -1;
+		timeLeftInAction[2] = -1;
+		timeLeftInAction[3] = -1;
 	}
 }
