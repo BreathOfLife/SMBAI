@@ -20,6 +20,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 /*Do you want to generate a full new set of agents? CHECKBOX
  *If you want to pull them from a save, please enter the name of the txt file (Leave blank if checked previous box): TEXT FIELD
@@ -104,7 +105,35 @@ public class LauncherForm extends JFrame implements ActionListener{
 		setResizable(false);
 		
 		c = getContentPane();
-        c.setLayout(new FlowLayout(FlowLayout.CENTER,5,20));
+		c.setLayout(new FlowLayout(FlowLayout.CENTER));
+		/*
+		SpringLayout spring = new SpringLayout();
+        c.setLayout(spring);
+        spring.putConstraint(SpringLayout.WEST, randomAgentsC,
+                5,
+                SpringLayout.EAST, randomAgentsL);
+        spring.putConstraint(SpringLayout.NORTH, randomAgentsC,
+                5,
+                SpringLayout.NORTH, getContentPane());
+        spring.putConstraint(SpringLayout.EAST, getContentPane(),
+                5,
+                SpringLayout.EAST, randomAgentsC);
+        ArrayList<JComponent> vertSep = new ArrayList<JComponent>();
+        vertSep.add(titleL);
+        vertSep.add(randomAgentsL);
+        vertSep.add(saveFilePullL);
+        vertSep.add(overwriteL);
+        vertSep.add(saveFilePushL);
+        vertSep.add();
+        for (int i = 0; i < vertSep.size() - 1; i++) {
+        	spring.putConstraint(SpringLayout.SOUTH, vertSep.get(i),
+                    5,
+                    SpringLayout.NORTH, vertSep.get(i+1));
+        }
+        spring.putConstraint(SpringLayout.SOUTH, getContentPane(),
+                5,
+                SpringLayout.SOUTH, errorText);
+        */
         c.setBackground(new Color(4,107,122));
         
         for (JComponent comp : components) {
@@ -118,15 +147,19 @@ public class LauncherForm extends JFrame implements ActionListener{
 	        		comp.setForeground(new Color(99,48,122));
 	        	}
 				comp.setBackground(new Color(4,107,122));
-			} catch (FontFormatException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (FontFormatException | IOException e) {
 				e.printStackTrace();
 			}
         	c.add(comp);
         }
+        try {
+			titleL.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(40f));
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+		}
         
         runB.addActionListener(this);
+        //pack();
         setVisible(true);
 	}
 	

@@ -87,8 +87,16 @@ public class Map {
     }
 
     public void drawMap(Graphics2D g2){
-        drawBackground(g2);
-        drawPrizes(g2);
+    	try {
+    		drawBackground(g2);
+        } catch (ConcurrentModificationException e) {
+        	System.out.println("Concurrent Modification Exception in drawBackground occured (in Map class)");
+        }
+        try {
+        	drawPrizes(g2);
+        } catch (ConcurrentModificationException e) {
+        	System.out.println("Concurrent Modification Exception in drawPrizes occured (in Map class)");
+        }
         try {
         	drawBricks(g2);
         } catch (ConcurrentModificationException e) {
