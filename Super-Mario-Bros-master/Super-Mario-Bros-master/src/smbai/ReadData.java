@@ -13,6 +13,12 @@ public class ReadData {
             FileInputStream file = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(file);
             SMBAIManager.setAgentIndex(in.readInt());
+            try {
+				SMBAIManager.setCatIndexes((int[])(in.readObject()));
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             ArrayList<Agent> agentList = null;
             try {
 				agentList = (ArrayList<Agent>)in.readObject();

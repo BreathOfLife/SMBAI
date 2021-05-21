@@ -15,6 +15,7 @@ public class SMBAIManager {
 	private static ArrayList<Agent> survivingList = new ArrayList<Agent>();
 	private static int activeAgentIndex = 0;
 	private static int activeGenIndex = 0;
+	private static int[] pureHybBeast = {-1,-1,-1}; //These are the indexes for the first agent types of each category, purebreds, hybrids, and beasts
 	
 	/*In each newly created agent population there are 3 types of agents, 
 	 * purebred that are direct descendants of the successful parents with no manipulation, 
@@ -84,18 +85,24 @@ public class SMBAIManager {
 
 	@SuppressWarnings("unused")
 	private void reGeneration() {
+		System.out.println("==========================");
 		System.out.println("Spawning new generation...");
 		if (geneFlowFactor + selectivityFactor >= 1) {
 			System.out.println("Hold up, gene flow and selectivity can't be that high because then they'll conflict with each other");
 		}
 		naturalSelection();
 		agentList.clear();
+		pureHybBeast[0] = agentList.size();
 		copyParents(); //Duplicate the parents to ensure the successful agents survive
-		geneFlow();
+		pureHybBeast[1] = agentList.size();
 		System.out.println("Generating agents based on parent traits");
 		for (int i = agentList.size(); i < agentQuantityPerGen; i++) {
 			agentList.add(selectParentTraits());
 		}
+		pureHybBeast[2] = agentList.size();
+		geneFlow();
+		survivingList.clear();
+		System.out.println("==========================");
 	}
 
 	private void geneFlow() {
@@ -155,6 +162,13 @@ public class SMBAIManager {
 		ButtonExecution.reset();
 		if ((activeAgentIndex + 1) < agentList.size()) {
 			activeAgentIndex++;
+			if (activeAgentIndex == pureHybBeast[0]) {
+				System.out.println("Intializing Testing of Purebreeds");
+			} else if (activeAgentIndex == pureHybBeast[1]) {
+				System.out.println("Intializing Testing of Hybrids");
+			} else if (activeAgentIndex == pureHybBeast[2]) {
+				System.out.println("Intializing Testing of Beasts");
+			}
 		} else {
 			reGeneration();
 			activeAgentIndex = 0;
@@ -181,5 +195,13 @@ public class SMBAIManager {
 	public static void setAgentIndex(int val) {
 		activeAgentIndex = val;
 		
+	}
+
+	public static int[] getCatIndexes() {
+		return pureHybBeast;
+	}
+
+	public static void setCatIndexes(int[] catIndexes) {
+		pureHybBeast = catIndexes;
 	}
 }

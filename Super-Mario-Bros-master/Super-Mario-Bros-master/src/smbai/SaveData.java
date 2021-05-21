@@ -2,7 +2,6 @@ package smbai;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -31,6 +30,7 @@ public class SaveData {
 	    	FileOutputStream file = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
             out.writeInt(SMBAIManager.getAgentIndex());
+            out.writeObject(SMBAIManager.getCatIndexes());
             out.writeObject(SMBAIManager.getAgentList());
             file.close();
             out.close();

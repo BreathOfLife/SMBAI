@@ -61,6 +61,9 @@ public class Strategy implements Serializable{
 	private double minorMutate(double initValue, double k) { //k should be a decimal as it is the exponent that the linearly created multiplier is raised to
 		double polarity = 2 * (RandomHandler.linRandI(2) - 0.5); //Randomly decides on either -1 or +1
 		double multiplier = Math.pow(RandomHandler.linRandD(1),1/k);
+		if (polarity * initValue * multiplier + initValue <= 0) {
+			return 0;
+		}
 		return polarity * initValue * multiplier + initValue;
 	}
 	
