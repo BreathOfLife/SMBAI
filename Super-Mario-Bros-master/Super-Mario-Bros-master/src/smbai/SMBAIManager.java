@@ -75,10 +75,8 @@ public class SMBAIManager {
 	public void scoreAI() {
 		if (GameEngine.gameEngine.getMapManager().endLevel()) {
 			agentList.get(activeAgentIndex).setScore(GameEngine.gameEngine.getRemainingTime());
-		} else if (GameEngine.gameEngine.isGameOver()) {
-			agentList.get(activeAgentIndex).setScore(GameEngine.gameEngine.getMapManager().getMario().getX() - 10000);
 		} else {
-			System.out.println("Error: Why was scoreAI called if the game isn't over?");
+			agentList.get(activeAgentIndex).setScore(GameEngine.gameEngine.getMapManager().getMario().getX() - 10000);
 		}
 		System.out.println("Agent " + (activeAgentIndex + 1) + " Score: " + agentList.get(activeAgentIndex).getScore());
 	}

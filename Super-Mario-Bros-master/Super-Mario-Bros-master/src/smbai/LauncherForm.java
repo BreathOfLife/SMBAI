@@ -100,7 +100,8 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(errorText);
 		
 		setTitle("SMBAI Launcher");
-		setBounds(200, 90, 1100, 600);
+		setBounds(0, 0, 1440, 900);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		
@@ -171,6 +172,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 			if (checkTypeValidity()) {
 				formatAnswers();
 				if (answerSensibility()) {
+					setVisible(false);
 					SMBAILauncher.submit();
 				}
 			}

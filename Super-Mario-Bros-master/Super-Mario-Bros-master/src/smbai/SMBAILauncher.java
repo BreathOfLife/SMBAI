@@ -1,5 +1,7 @@
 package smbai;
 
+import java.awt.event.WindowEvent;
+
 import manager.GameEngine;
 
 public class SMBAILauncher{
@@ -29,6 +31,7 @@ public class SMBAILauncher{
 		gens = launchF.getGens();
 		selectFact = launchF.getSelect();
 		geneFlow = launchF.getFlow();
+		launchF.dispose();
 		GameEngine.gameStart();
 	}
 

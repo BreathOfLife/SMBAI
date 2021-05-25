@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
 
 public class GameEngine implements Runnable {
 
-    private final static int WIDTH = 1268, HEIGHT = 708;
+    private final static int WIDTH = 1440, HEIGHT = 900;
 
     private MapManager mapManager;
     private SMBAIManager aiManager;
@@ -30,6 +30,7 @@ public class GameEngine implements Runnable {
     private StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
     private int selectedMap = 0;
 	private boolean skipNextTimeUpdate = false;
+
 	
 	private GameEngine() {
 		init();
@@ -123,7 +124,7 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        double amountOfTicks = 1000.0;
+        double amountOfTicks = 60.0; //Set 1000 for max progress
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
 
@@ -236,6 +237,9 @@ public class GameEngine implements Runnable {
             } else if (input == ButtonAction.PAUSE_RESUME) {
                 SaveData.save(SMBAIManager.pushFile);
                 System.exit(0);
+            } else if (input == ButtonAction.SELECT) {
+            	reset();
+                aiManager.startAIRun();
             }
         } else if(gameStatus == GameStatus.GAME_OVER){
             reset();
@@ -243,10 +247,6 @@ public class GameEngine implements Runnable {
         } else if(gameStatus == GameStatus.MISSION_PASSED){
             reset();
             aiManager.startAIRun();
-        }
-
-        if(input == ButtonAction.GO_TO_START_SCREEN){
-            setGameStatus(GameStatus.START_SCREEN);
         }
     }
 
@@ -277,9 +277,7 @@ public class GameEngine implements Runnable {
     }
 
     public boolean isGameOver() {
-        if(gameStatus == GameStatus.RUNNING)
-            return mapManager.isGameOver();
-        return false;
+        return mapManager.isGameOver();
     }
 
     public ImageLoader getImageLoader() {
