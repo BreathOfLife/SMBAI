@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,7 +45,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private JCheckBox randomAgentsC = new JCheckBox();
 	private boolean randomAgentsA;
 	private JLabel saveFilePullL = new JLabel("If you want to pull them from a save please enter the name of the txt file (Leave blank if checked previous box):");
-	private JTextField saveFilePullT = new JTextField();
+	private JComboBox saveFilePullT;
 	private String saveFilePullA;
 	private JLabel overwriteL = new JLabel("When the program closes do you want to save to the same txt file and overwrite it?");
 	private JCheckBox overwriteC = new JCheckBox();
@@ -69,6 +70,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private JButton runB = new JButton("Run SMBAI");
 	private JLabel errorText = new JLabel();
 	
+	ArrayList<String> validPullFiles = new ArrayList<String>();
 	private ArrayList<JComponent> components = new ArrayList<JComponent>();
 	
 	
@@ -77,6 +79,19 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(randomAgentsL);
 		components.add(randomAgentsC);
 		components.add(saveFilePullL);
+		for (String file : new File(System.getProperty("user.dir")).list()) {
+			try {
+				if (file.substring(file.length() - 4).equals(".txt")) {
+					validPullFiles.add(file);
+				}
+			} catch (StringIndexOutOfBoundsException e) {
+				
+			}
+		}
+		String[] validPullFilesArray = new String[validPullFiles.size()];
+		validPullFilesArray = (String[]) validPullFiles.toArray();
+		saveFilePullT = new JComboBox(validPullFilesArray);
+		
 		components.add(saveFilePullT);
 		components.add(overwriteL);
 		components.add(overwriteC);
@@ -184,7 +199,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private void formatAnswers() {
 		try {
 			if (!saveFilePullA.substring(saveFilePullA.length()-4).equals(".txt")) {
-				saveFilePullA = saveFilePullT.getText() + ".txt";
+				saveFilePullA = validPullFiles.get(saveFilePullT.getSelectedIndex()) + ".txt";
 			}
 		} catch (StringIndexOutOfBoundsException e) {
 			saveFilePullA = saveFilePullA + ".txt";
@@ -229,7 +244,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 			errorText.setText("Null Error (One or more sections required to be filled in were left blank)");
 			return false;
 		}
-		if (!randomAgentsC.isSelected() && saveFilePullT.getText().equals("")) {
+		if (!randomAgentsC.isSelected() && validPullFiles.get(saveFilePullT.getSelectedIndex()).equals("")) {
 			errorText.setText("Null Error (Pull File is left blank without checking random agents)");
 			return false;
 		}
@@ -243,7 +258,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 		}
 		try {
 			randomAgentsA = randomAgentsC.isSelected();
-			saveFilePullA = saveFilePullT.getText().trim();
+			saveFilePullA = validPullFiles.get(saveFilePullT.getSelectedIndex()).trim();
 			overwriteA = overwriteC.isSelected();
 			saveFilePushA = saveFilePushT.getText().trim();
 			numAgentsA = Integer.parseInt(numAgentsT.getText().trim());
