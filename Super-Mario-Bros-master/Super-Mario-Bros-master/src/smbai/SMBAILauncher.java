@@ -13,6 +13,8 @@ public class SMBAILauncher{
 	public static int gens;
 	public static double selectFact;
 	public static double geneFlow;
+	public static boolean resetIndex;
+	public static double tickSpeed;
 	
 	private static LauncherForm launchF;
 	
@@ -31,6 +33,8 @@ public class SMBAILauncher{
 		gens = launchF.getGens();
 		selectFact = launchF.getSelect();
 		geneFlow = launchF.getFlow();
+		resetIndex = launchF.getResetIndex();
+		tickSpeed = launchF.getTicks();
 		launchF.dispose();
 		GameEngine.gameStart();
 	}

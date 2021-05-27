@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomHandler {
 	private static Random rand = new Random();
-	public static double hypRandD(double k) { //Hyperbolically generated random double, starts at 1
+	public static double hypRandD(double k) { //Hyperbolically generated random double, starts at k
 		return k / rand.nextDouble() - k + 1;
 	}
 	public static int hypRandI(double k) { //Hyperbolically generated random integer, starts at 1

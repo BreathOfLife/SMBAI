@@ -1,6 +1,7 @@
 package manager;
 
 import model.hero.Mario;
+import smbai.SMBAILauncher;
 import smbai.SMBAIManager;
 import smbai.SaveData;
 import view.ImageLoader;
@@ -124,7 +125,7 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0; //Set 1000 for max progress
+        double amountOfTicks = SMBAILauncher.tickSpeed; //Between 60 and 1000
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
 

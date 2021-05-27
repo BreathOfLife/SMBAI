@@ -46,6 +46,9 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private boolean randomAgentsA;
 	private JLabel saveFilePullL = new JLabel("If you want to pull them from a save please enter the name of the txt file (Leave blank if checked previous box):");
 	private JComboBox saveFilePullT;
+	private JLabel resetIndexL = new JLabel("If you are pulling from a save, do you want to start from the beginning of the set (This allows you to see the best agents first): ");
+	private JCheckBox resetIndexC = new JCheckBox();
+	private boolean resetIndexA;
 	private String saveFilePullA;
 	private JLabel overwriteL = new JLabel("When the program closes do you want to save to the same txt file and overwrite it?");
 	private JCheckBox overwriteC = new JCheckBox();
@@ -66,6 +69,9 @@ public class LauncherForm extends JFrame implements ActionListener{
 	private JLabel numGenL = new JLabel("Number of generations (Set 0 if desiring to proceed indefinitely):");
 	private JTextField numGenT = new JTextField();
 	private int numGenA;
+	private JLabel speedL = new JLabel("Tick speed (Usually between 60 and 1000):");
+	private JTextField speedT = new JTextField();
+	private double speedA;
 	private JLabel escNoteL = new JLabel("*Remember program can be paused and saved at any point by pressing ESC*");
 	private JButton runB = new JButton("Run SMBAI");
 	private JLabel errorText = new JLabel();
@@ -89,10 +95,14 @@ public class LauncherForm extends JFrame implements ActionListener{
 			}
 		}
 		String[] validPullFilesArray = new String[validPullFiles.size()];
-		validPullFilesArray = (String[]) validPullFiles.toArray();
+		for (int i = 0; i < validPullFiles.size(); i++) {
+			validPullFilesArray[i] = validPullFiles.get(i);
+		}
 		saveFilePullT = new JComboBox(validPullFilesArray);
 		
 		components.add(saveFilePullT);
+		components.add(resetIndexL);
+		components.add(resetIndexC);
 		components.add(overwriteL);
 		components.add(overwriteC);
 		components.add(saveFilePushL);
@@ -110,6 +120,9 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(numGenL);
 		components.add(numGenT);
 		numGenT.setText("0");
+		components.add(speedL);
+		components.add(speedT);
+		speedT.setText("60");
 		components.add(escNoteL);
 		components.add(runB);
 		components.add(errorText);
@@ -154,9 +167,13 @@ public class LauncherForm extends JFrame implements ActionListener{
         
         for (JComponent comp : components) {
         	try {
-				if (comp.getClass().equals(saveFilePullT.getClass())) {
-	        		comp.setPreferredSize((new Dimension(50,25)));
+				if (comp.getClass().equals(saveFilePushT.getClass())) {
+	        		comp.setPreferredSize((new Dimension(100,25)));
 	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(25f));
+	        		comp.setForeground(new Color(255,109,249));
+	        	} else if (comp.getClass().equals(saveFilePullT.getClass())){
+	        		comp.setPreferredSize((new Dimension(150,25)));
+	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(20f));
 	        		comp.setForeground(new Color(255,109,249));
 	        	} else {
 	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(20f));
@@ -259,18 +276,24 @@ public class LauncherForm extends JFrame implements ActionListener{
 		try {
 			randomAgentsA = randomAgentsC.isSelected();
 			saveFilePullA = validPullFiles.get(saveFilePullT.getSelectedIndex()).trim();
+			resetIndexA = (resetIndexC.isSelected() && !randomAgentsC.isSelected());
 			overwriteA = overwriteC.isSelected();
 			saveFilePushA = saveFilePushT.getText().trim();
 			numAgentsA = Integer.parseInt(numAgentsT.getText().trim());
 			selectFactA = Double.parseDouble(selectFactT.getText().trim());
 			geneFlowA = Double.parseDouble(geneFlowT.getText().trim());
 			numGenA = Integer.parseInt(numGenT.getText().trim());
+			speedA = Double.parseDouble(speedT.getText().trim());
 			if (selectFactA > 1 || selectFactA < 0) {
 				errorText.setText("Validity Error (Selectivity Factor must be between 1 and 0)");
 				return false;
 			}
 			if (geneFlowA > 1 || geneFlowA < 0) {
 				errorText.setText("Validity Error (Gene Flow must be between 1 and 0)");
+				return false;
+			}
+			if (speedA < 0) {
+				errorText.setText("Validity Error (Tick Speed must be more than 0)");
 				return false;
 			}
 			return true;
@@ -327,6 +350,14 @@ public class LauncherForm extends JFrame implements ActionListener{
 
 	public double getFlow() {
 		return geneFlowA;
+	}
+	
+	public boolean getResetIndex() {
+		return resetIndexA;
+	}
+	
+	public double getTicks() {
+		return speedA;
 	}
 	
 	

@@ -34,6 +34,9 @@ public class SMBAIManager {
 		getLauncherInput();
 		if (readFromSave) {
 			ReadData.read(pullFile);
+			if (SMBAILauncher.resetIndex) {
+				activeAgentIndex = 0;
+			}
 		} else {
 			createRandomAgents();
 		}
@@ -124,7 +127,11 @@ public class SMBAIManager {
 		ArrayList<Strategy> stratsList = new ArrayList<Strategy>();
 		int numStrats = survivingList.get(RandomHandler.linRandI(survivingList.size())).getStratSize();
 		for (int i = 0; i < numStrats - numNewRandomStrats; i++) {
-			Agent currentParent = survivingList.get(RandomHandler.linRandI(survivingList.size()));
+			int currentParentIndex = Integer.MAX_VALUE;
+			while (currentParentIndex > survivingList.size()) {
+				currentParentIndex = 1 / RandomHandler.hypRandI(survivingList.size());
+			}
+			Agent currentParent = survivingList.get(currentParentIndex);
 			stratsList.add(currentParent.getStrat(RandomHandler.linRandI(currentParent.getStratSize())).clone());
 			stratsList.get(stratsList.size()-1).massMinorMutate(0.1, 0.1, 0.1);
 		}
@@ -154,6 +161,23 @@ public class SMBAIManager {
 			System.out.println("Score of surviving agent: " + highScore);
 			agentList.remove(highIndex);
 		}
+		//Sort list
+		ArrayList<Agent> tempList = new ArrayList<Agent>();
+		Agent highestScoreAgent;
+		int highestScoreIndex;
+		while (survivingList.size() > 0) {
+			highestScoreAgent = survivingList.get(0);
+			highestScoreIndex = 0;
+			for (int i = 0; i < survivingList.size(); i++) {
+				if (highestScoreAgent.getScore() < survivingList.get(i).getScore()) {
+					highestScoreAgent = survivingList.get(i);
+					highestScoreIndex = i;
+				}
+			}
+			tempList.add(highestScoreAgent);
+			survivingList.remove(highestScoreIndex);	
+		}
+		survivingList = tempList;
 	}
 
 	public void nextAI() {
