@@ -87,7 +87,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(saveFilePullL);
 		for (String file : new File(System.getProperty("user.dir")).list()) {
 			try {
-				if (file.substring(file.length() - 4).equals(".txt")) {
+				if (file.substring(file.length() - 6).equals(".smbai")) {
 					validPullFiles.add(file);
 				}
 			} catch (StringIndexOutOfBoundsException e) {
@@ -215,21 +215,21 @@ public class LauncherForm extends JFrame implements ActionListener{
 
 	private void formatAnswers() {
 		try {
-			if (!saveFilePullA.substring(saveFilePullA.length()-4).equals(".txt")) {
-				saveFilePullA = validPullFiles.get(saveFilePullT.getSelectedIndex()) + ".txt";
+			if (!saveFilePullA.substring(saveFilePullA.length()-6).equals(".smbai")) {
+				saveFilePullA = validPullFiles.get(saveFilePullT.getSelectedIndex()) + ".smbai";
 			}
 		} catch (StringIndexOutOfBoundsException e) {
-			saveFilePullA = saveFilePullA + ".txt";
+			saveFilePullA = saveFilePullA + ".smbai";
 		}
-		if (overwriteA && !saveFilePullA.equals(".txt")) {
+		if (overwriteA && !saveFilePullA.equals(".smbai")) {
 			saveFilePushA = saveFilePullA;
 		} else {
 			try {
-				if (!saveFilePushA.substring(saveFilePushA.length()-4).equals(".txt")) {
-					saveFilePushA = saveFilePushA + ".txt";
+				if (!saveFilePushA.substring(saveFilePushA.length()-6).equals(".smbai")) {
+					saveFilePushA = saveFilePushA + ".smbai";
 				}
 			} catch (StringIndexOutOfBoundsException e) {
-				saveFilePushA = saveFilePushA + ".txt";
+				saveFilePushA = saveFilePushA + ".smbai";
 			}
 		}
 		
