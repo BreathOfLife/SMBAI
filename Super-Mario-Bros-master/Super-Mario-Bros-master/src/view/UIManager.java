@@ -79,6 +79,7 @@ public class UIManager extends JPanel{
             drawRemainingLives(g2);
             drawAcquiredCoins(g2);
             drawRemainingTime(g2);
+            drawSMBAIText(g2);
 
             if(gameStatus == GameStatus.PAUSED){
                 drawPauseScreen(g2);
@@ -96,6 +97,17 @@ public class UIManager extends JPanel{
         g2.setColor(Color.WHITE);
         String displayedStr = "TIME: " + engine.getRemainingTime();
         g2.drawString(displayedStr, 750, 50);
+    }
+    
+    private void drawSMBAIText(Graphics2D g2) {
+        g2.setFont(gameFont.deriveFont(20f));
+        g2.setColor(Color.WHITE);
+        String displayedStr = "Press [ to decrease speed";
+        g2.drawString(displayedStr, 200, 45);
+        displayedStr = "and ] to increase it.";
+        g2.drawString(displayedStr, 200, 70);
+        displayedStr = "SPEED: " + (int)(GameEngine.getTickSpeed()) + " Frames Per Second";
+        g2.drawString(displayedStr, 200, 100);
     }
 
     private void drawVictoryScreen(Graphics2D g2) {

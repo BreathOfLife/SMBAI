@@ -31,6 +31,7 @@ public class GameEngine implements Runnable {
     private StartScreenSelection startScreenSelection = StartScreenSelection.START_GAME;
     private int selectedMap = 0;
 	private boolean skipNextTimeUpdate = false;
+	private double tickSpeed;
 
 	
 	private GameEngine() {
@@ -49,6 +50,7 @@ public class GameEngine implements Runnable {
         uiManager = new UIManager(this, WIDTH, HEIGHT);
         soundManager = new SoundManager();
         mapManager = new MapManager();
+        tickSpeed = SMBAILauncher.tickSpeed;
         
         aiManager = new SMBAIManager();
         
@@ -125,7 +127,7 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        double amountOfTicks = SMBAILauncher.tickSpeed; //Between 60 and 1000
+        double amountOfTicks = tickSpeed; //Between 60 and 1000
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
 
@@ -365,4 +367,8 @@ public class GameEngine implements Runnable {
 	public int getRemainingTime() {
         return mapManager.getRemainingTime();
     }
+
+	public static double getTickSpeed() {
+		return gameEngine.tickSpeed;
+	}
 }
