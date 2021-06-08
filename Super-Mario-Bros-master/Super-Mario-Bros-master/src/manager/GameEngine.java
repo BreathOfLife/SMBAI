@@ -32,6 +32,7 @@ public class GameEngine implements Runnable {
     private int selectedMap = 0;
 	private boolean skipNextTimeUpdate = false;
 	private double tickSpeed;
+	private final int tickIncrement = 2;
 
 	
 	private GameEngine() {
@@ -246,10 +247,10 @@ public class GameEngine implements Runnable {
             	reset();
                 aiManager.startAIRun();
             } else if (input == ButtonAction.TICK_SPEED_UP) {
-            	tickSpeed += 1;
+            	tickSpeed += tickIncrement;
             } else if (input == ButtonAction.TICK_SPEED_DOWN) {
-            	if (tickSpeed > 0) {
-            		tickSpeed -= 1;
+            	if (tickSpeed - tickIncrement >= 0) {
+            		tickSpeed -= tickIncrement;
             	} else {
             		soundManager.playError();
             	}
