@@ -49,6 +49,12 @@ public class InputManager implements KeyListener, MouseListener{
         }
         else if (keyCode == KeyEvent.VK_SPACE){
             currentAction = ButtonAction.FIRE;
+        } 
+        else if (keyCode == KeyEvent.VK_OPEN_BRACKET) {
+        	currentAction = ButtonAction.TICK_SPEED_UP;
+        }
+        else if (keyCode == KeyEvent.VK_CLOSE_BRACKET) {
+        	currentAction = ButtonAction.TICK_SPEED_DOWN;
         }
 
 

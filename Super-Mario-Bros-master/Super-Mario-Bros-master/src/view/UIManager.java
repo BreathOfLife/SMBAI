@@ -102,9 +102,9 @@ public class UIManager extends JPanel{
     private void drawSMBAIText(Graphics2D g2) {
         g2.setFont(gameFont.deriveFont(20f));
         g2.setColor(Color.WHITE);
-        String displayedStr = "Press [ to decrease speed";
+        String displayedStr = "Press [ to increase speed";
         g2.drawString(displayedStr, 200, 45);
-        displayedStr = "and ] to increase it.";
+        displayedStr = "and ] to decrease it.";
         g2.drawString(displayedStr, 200, 70);
         displayedStr = "SPEED: " + (int)(GameEngine.getTickSpeed()) + " Frames Per Second";
         g2.drawString(displayedStr, 200, 100);

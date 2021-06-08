@@ -155,6 +155,8 @@ public class GameEngine implements Runnable {
             	selectMapViaKeyboard();
             	SMBAIManager.autoStart = false;
             }
+            amountOfTicks = tickSpeed;
+            ns = 1000000000 / amountOfTicks;
         }
     }
 
@@ -243,6 +245,10 @@ public class GameEngine implements Runnable {
             } else if (input == ButtonAction.SELECT) {
             	reset();
                 aiManager.startAIRun();
+            } else if (input == ButtonAction.TICK_SPEED_UP) {
+            	tickSpeed += 1;
+            } else if (input == ButtonAction.TICK_SPEED_DOWN) {
+            	tickSpeed -= 1;
             }
         } else if(gameStatus == GameStatus.GAME_OVER){
             reset();
