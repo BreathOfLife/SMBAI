@@ -108,4 +108,9 @@ public class SoundManager {
     public void playFireFlower() {
 
     }
+    
+    public void playError() {
+    	Clip clip = getClip(loadAudio("error"));
+    	clip.start();
+    }
 }

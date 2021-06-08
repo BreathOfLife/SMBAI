@@ -248,7 +248,11 @@ public class GameEngine implements Runnable {
             } else if (input == ButtonAction.TICK_SPEED_UP) {
             	tickSpeed += 1;
             } else if (input == ButtonAction.TICK_SPEED_DOWN) {
-            	tickSpeed -= 1;
+            	if (tickSpeed > 0) {
+            		tickSpeed -= 1;
+            	} else {
+            		soundManager.playError();
+            	}
             }
         } else if(gameStatus == GameStatus.GAME_OVER){
             reset();
