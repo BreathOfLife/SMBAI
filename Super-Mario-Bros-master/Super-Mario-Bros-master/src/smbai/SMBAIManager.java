@@ -182,22 +182,26 @@ public class SMBAIManager {
 
 	public void nextAI() {
 		ButtonExecution.reset();
-		if ((activeAgentIndex + 1) < agentList.size()) {
-			activeAgentIndex++;
-			if (activeAgentIndex == pureHybBeast[0]) {
-				System.out.println("Intializing Testing of Purebreeds");
-			} else if (activeAgentIndex == pureHybBeast[1]) {
-				System.out.println("Intializing Testing of Hybrids");
-			} else if (activeAgentIndex == pureHybBeast[2]) {
-				System.out.println("Intializing Testing of Beasts");
-			}
+		if (agentList.get(activeAgentIndex).getScore() >= 95.0) {
+			System.out.println("Agent has recieved inachievable score, retrying...");
 		} else {
-			reGeneration();
-			activeAgentIndex = 0;
-			activeGenIndex++;
-			if ((activeGenIndex >= totalGens) && totalGens != 0) {
-				SaveData.save(pushFile);
-                System.exit(0);
+			if ((activeAgentIndex + 1) < agentList.size()) {
+				activeAgentIndex++;
+				if (activeAgentIndex == pureHybBeast[0]) {
+					System.out.println("Intializing Testing of Purebreeds");
+				} else if (activeAgentIndex == pureHybBeast[1]) {
+					System.out.println("Intializing Testing of Hybrids");
+				} else if (activeAgentIndex == pureHybBeast[2]) {
+					System.out.println("Intializing Testing of Beasts");
+				}
+			} else {
+				reGeneration();
+				activeAgentIndex = 0;
+				activeGenIndex++;
+				if ((activeGenIndex >= totalGens) && totalGens != 0) {
+					SaveData.save(pushFile);
+	                System.exit(0);
+				}
 			}
 		}
 	}

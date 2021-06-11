@@ -66,7 +66,6 @@ public class Mario extends GameObject{
     }
 
     public boolean onTouchEnemy(GameEngine engine){
-
         if(!marioForm.isSuper() && !marioForm.isFire()){
             remainingLives--;
             engine.playMarioDies();
@@ -130,5 +129,9 @@ public class Mario extends GameObject{
         setX(50);
         setJumping(false);
         setFalling(true);
+    }
+    
+    public boolean isStill() {
+    	return getVelX() == 0;
     }
 }

@@ -181,12 +181,30 @@ public class MapManager {
             }
         }
 
-        for(Enemy enemy : enemies){
-            Rectangle enemyBounds = !toRight ? enemy.getRightBounds() : enemy.getLeftBounds();
-            if (marioBounds.intersects(enemyBounds)) {
-                marioDies = mario.onTouchEnemy(engine);
-                toBeRemoved.add(enemy);
-            }
+        if (mario.isStill()) {
+        	for(Enemy enemy : enemies){
+	            Rectangle enemyBounds = enemy.getRightBounds();
+	            if (marioBounds.intersects(enemyBounds)) {
+	                marioDies = mario.onTouchEnemy(engine);
+	                toBeRemoved.add(enemy);
+	            }
+	        }
+        	
+        	for(Enemy enemy : enemies){
+	            Rectangle enemyBounds = enemy.getLeftBounds();
+	            if (marioBounds.intersects(enemyBounds)) {
+	                marioDies = mario.onTouchEnemy(engine);
+	                toBeRemoved.add(enemy);
+	            }
+	        }
+        } else {
+	        for(Enemy enemy : enemies){
+	            Rectangle enemyBounds = !toRight ? enemy.getRightBounds() : enemy.getLeftBounds();
+	            if (marioBounds.intersects(enemyBounds)) {
+	                marioDies = mario.onTouchEnemy(engine);
+	                toBeRemoved.add(enemy);
+	            }
+	        }
         }
         removeObjects(toBeRemoved);
 

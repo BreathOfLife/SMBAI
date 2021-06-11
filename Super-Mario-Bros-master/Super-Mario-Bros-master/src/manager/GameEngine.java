@@ -138,7 +138,7 @@ public class GameEngine implements Runnable {
             delta += (now - lastTime) / ns;
             while (delta >= 1) {
                 if (gameStatus == GameStatus.RUNNING) {
-                	aiManager.aiLoop();
+                	//aiManager.aiLoop();
                     gameLoop();
                 }
                 delta--;
