@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Agent implements Serializable{
 	ArrayList<Strategy> strats;
-	double score;
+	double score = 0;
 	
 	public Agent(int strategyQuantity) {
 		strats = new ArrayList<Strategy>();

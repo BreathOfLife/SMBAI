@@ -28,6 +28,7 @@ public class SMBAIManager {
 	private static boolean readFromSave;
 	private static int totalGens;
 	public static boolean autoStart = true;
+	private static double oldTickSpeed = -1;
 	
 	public SMBAIManager() {
 		getLauncherInput();
@@ -182,8 +183,17 @@ public class SMBAIManager {
 	public void nextAI() {
 		ButtonExecution.reset();
 		if (agentList.get(activeAgentIndex).getScore() >= 95.0) {
-			System.out.println("Agent has recieved inachievable score, retrying...");
+			System.out.println("Agent has recieved inachievable score, retrying at lower frame rate...");
+			if (oldTickSpeed == -1) {
+				oldTickSpeed = GameEngine.getTickSpeed();
+			}
+			GameEngine.setTickSpeed(60);
 		} else {
+			if (oldTickSpeed != -1) {
+				System.out.println("Reverting tick speed");
+				GameEngine.setTickSpeed(oldTickSpeed);
+				oldTickSpeed = -1;
+			}
 			if ((activeAgentIndex + 1) < agentList.size()) {
 				activeAgentIndex++;
 				if (activeAgentIndex == pureHybBeast[0]) {
@@ -201,8 +211,13 @@ public class SMBAIManager {
 					SaveData.save(pushFile);
 	                System.exit(0);
 				}
+				SaveData.save(pushFile);
 			}
+			/*if (agentList.get(activeAgentIndex).getScore() != 0) {
+				System.out.println("Current agent has been previously tested with a score of: " + agentList.get(activeAgentIndex).getScore());
+			}*/
 		}
+		
 	}
 	
 	public static ArrayList<Agent> getAgentList() {

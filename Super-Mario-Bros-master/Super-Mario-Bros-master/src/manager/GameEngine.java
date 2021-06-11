@@ -382,4 +382,9 @@ public class GameEngine implements Runnable {
 	public static double getTickSpeed() {
 		return gameEngine.tickSpeed;
 	}
+
+	public static void setTickSpeed(double value) {
+		gameEngine.tickSpeed = value;
+		
+	}
 }
