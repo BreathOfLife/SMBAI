@@ -4,60 +4,52 @@ import manager.ButtonAction;
 import manager.GameEngine;
 
 public class ButtonExecution {
-	private static long[] timeLeftInAction = {-1,-1,-1,-1};
+	private static long[] framesLeftInAction = {-1,-1,-1,-1};
 	private static boolean[] actionHeld = {false,false,false,false};
-	private static long lastTime;
-	private static long currentTime;
-	
-	public static void init() {
-		lastTime = System.nanoTime();
-	}
 	
 	public static void setRightRelease(double duration) {
-		duration *= 1e+9;
-		if (timeLeftInAction[0] < duration) {
-			timeLeftInAction[0] = (long) duration;
+		duration *= 60;
+		if (framesLeftInAction[0] < duration) {
+			framesLeftInAction[0] = (long) duration;
 		}
 		actionHeld[0] = true;
 		Right();
 	}
 	
 	public static void setLeftRelease(double duration) {
-		duration *= 1e+9;
-		if (timeLeftInAction[1] < duration) {
-			timeLeftInAction[1] = (long) duration;
+		duration *= 60;
+		if (framesLeftInAction[1] < duration) {
+			framesLeftInAction[1] = (long) duration;
 		}
 		actionHeld[1] = true;
 		Left();
 	}
 	
 	public static void setJumpRelease(double duration) {
-		duration *= 1e+9;
-		if (timeLeftInAction[2] < duration) {
-			timeLeftInAction[2] = (long) duration;
+		duration *= 60;
+		if (framesLeftInAction[2] < duration) {
+			framesLeftInAction[2] = (long) duration;
 		}
 		actionHeld[2] = true;
 		Jump();
 	}
 	
 	public static void setFireRelease(double duration) {
-		duration *= 1e+9;
-		if (timeLeftInAction[3] < duration) {
-			timeLeftInAction[3] = (long) duration;
+		duration *= 60;
+		if (framesLeftInAction[3] < duration) {
+			framesLeftInAction[3] = (long) duration;
 		}
 		actionHeld[3] = true;
 		Fire();
 	}
 	
 	public static void updateTimings() {
-		currentTime = System.nanoTime();
-		long diffTime = currentTime - lastTime;
-		for (int timeLeftIndex = 0; timeLeftIndex < timeLeftInAction.length; timeLeftIndex++) {
-			if (timeLeftInAction[timeLeftIndex] > 0) {
-				timeLeftInAction[timeLeftIndex] -= diffTime;
-				if (timeLeftInAction[timeLeftIndex] <= 0) {
+		for (int timeLeftIndex = 0; timeLeftIndex < framesLeftInAction.length; timeLeftIndex++) {
+			if (framesLeftInAction[timeLeftIndex] > 0) {
+				framesLeftInAction[timeLeftIndex]--;
+				if (framesLeftInAction[timeLeftIndex] <= 0) {
 					actionHeld[timeLeftIndex] = false;
-					timeLeftInAction[timeLeftIndex] = -1;
+					framesLeftInAction[timeLeftIndex] = -1;
 					if (timeLeftIndex < 2) {
 						GameEngine.gameEngine.inputManager.virtualNotifyInput(ButtonAction.ACTION_COMPLETED_X);
 					}
@@ -65,7 +57,6 @@ public class ButtonExecution {
 			}
 		}
 		callFireAndJump();
-		lastTime = currentTime;
 	}
 	
 	private static void Right() {
@@ -94,9 +85,9 @@ public class ButtonExecution {
 	}
 	
 	public static void reset() {
-		timeLeftInAction[0] = -1;
-		timeLeftInAction[1] = -1;
-		timeLeftInAction[2] = -1;
-		timeLeftInAction[3] = -1;
+		framesLeftInAction[0] = -1;
+		framesLeftInAction[1] = -1;
+		framesLeftInAction[2] = -1;
+		framesLeftInAction[3] = -1;
 	}
 }

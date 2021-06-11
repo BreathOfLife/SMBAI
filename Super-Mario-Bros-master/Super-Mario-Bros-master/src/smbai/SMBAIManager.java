@@ -30,7 +30,6 @@ public class SMBAIManager {
 	public static boolean autoStart = true;
 	
 	public SMBAIManager() {
-		ButtonExecution.init();
 		getLauncherInput();
 		if (readFromSave) {
 			ReadData.read(pullFile);
