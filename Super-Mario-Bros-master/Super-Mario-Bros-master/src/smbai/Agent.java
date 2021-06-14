@@ -24,7 +24,7 @@ public class Agent implements Serializable{
 		strats.add(new Strategy(0));
 	}
 	
-	public Agent clone() {
+	public Agent agentClone() {
 		ArrayList<Strategy> stratsList = new ArrayList<Strategy>();
 		for (Strategy str : strats) {
 			stratsList.add(str.clone());

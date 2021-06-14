@@ -115,7 +115,7 @@ public class SMBAIManager {
 	private void copyParents() {
 		System.out.println("Carrying duplicates of the survivors of the parent generation to the new one");
 		for (int i = 0; i < survivingList.size(); i++) {
-			agentList.add(survivingList.get(i).clone());
+			agentList.add(survivingList.get(i).agentClone());
 		}
 	}
 
