@@ -115,7 +115,11 @@ public class SMBAIManager {
 	private void copyParents() {
 		System.out.println("Carrying duplicates of the survivors of the parent generation to the new one");
 		for (int i = 0; i < survivingList.size(); i++) {
-			agentList.add(survivingList.get(i).clone());
+			ArrayList<Strategy> stratsList = new ArrayList<Strategy>();
+			for (int j = 0; j < survivingList.get(i).getStratSize(); j++) {
+				stratsList.add(survivingList.get(i).getStrat(j).clone());
+			}
+			agentList.add(new Agent(stratsList));
 		}
 	}
 
@@ -154,6 +158,7 @@ public class SMBAIManager {
 				}
 			}
 			survivingList.add(agentList.get(highIndex));
+			System.out.println("Score of surviving agent: " + highScore);
 			agentList.remove(highIndex);
 		}
 		//Sort list
@@ -173,9 +178,6 @@ public class SMBAIManager {
 			survivingList.remove(highestScoreIndex);	
 		}
 		survivingList = tempList;
-		for (Agent agent : survivingList) {
-			System.out.println("Score of surviving agent: " + agent.getScore());
-		}
 	}
 
 	public void nextAI() {
