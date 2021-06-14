@@ -88,16 +88,13 @@ public class SMBAIManager {
 	private void reGeneration() {
 		System.out.println("==========================");
 		System.out.println("Spawning new generation...");
-		if (geneFlowFactor + selectivityFactor >= 1) {
-			System.out.println("Hold up, gene flow and selectivity can't be that high because then they'll conflict with each other");
-		}
 		naturalSelection();
 		agentList.clear();
 		pureHybBeast[0] = agentList.size();
 		copyParents(); //Duplicate the parents to ensure the successful agents survive
 		pureHybBeast[1] = agentList.size();
 		System.out.println("Generating agents based on parent traits");
-		for (int i = agentList.size(); i < agentQuantityPerGen; i++) {
+		for (int i = agentList.size(); i < (int) (geneFlowFactor * agentQuantityPerGen); i++) {
 			agentList.add(selectParentTraits());
 		}
 		pureHybBeast[2] = agentList.size();

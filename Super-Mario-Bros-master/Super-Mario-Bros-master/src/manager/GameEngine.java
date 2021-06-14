@@ -34,6 +34,15 @@ public class GameEngine implements Runnable {
 	private double tickSpeed;
 	private final int tickIncrement = 2;
 
+	private boolean suspended;
+
+	public void suspend() {
+		suspended = true;
+	}
+	
+	public void resume() {
+		suspended = false;
+	}
 	
 	private GameEngine() {
 		init();
@@ -85,10 +94,12 @@ public class GameEngine implements Runnable {
     }
 
     private void reset(){
+    	GameEngine.gameEngine.suspend();
     	aiManager.scoreAI();
         resetCamera();
         aiManager.nextAI();
         aiManager.startAIRun();
+        GameEngine.gameEngine.resume();
     }
 
     public void resetCamera(){
@@ -133,7 +144,9 @@ public class GameEngine implements Runnable {
         double delta = 0;
 
         while (isRunning && !thread.isInterrupted()) {
-
+        	if (suspended) {
+        		lastTime = System.nanoTime();
+        	}
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             while (delta >= 1) {
