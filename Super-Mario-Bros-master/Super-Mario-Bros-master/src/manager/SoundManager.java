@@ -9,10 +9,28 @@ import java.io.InputStream;
 public class SoundManager {
 
     private Clip background;
+    private Clip jumpClip;
+    private Clip coinClip;
+    private Clip fireballClip;
+    private Clip gameOverClip;
+    private Clip stompClip;
+    private Clip oneUpClip;
+    private Clip mushroomClip;
+    private Clip deathClip;
+    private Clip errorClip;
     private long clipTime = 0;
 
     public SoundManager() {
         background = getClip(loadAudio("background"));
+        jumpClip = getClip(loadAudio("jump"));
+        coinClip = getClip(loadAudio("coin"));
+        fireballClip = getClip(loadAudio("fireball"));
+        gameOverClip = getClip(loadAudio("gameOver"));
+        stompClip = getClip(loadAudio("stomp"));
+        oneUpClip = getClip(loadAudio("oneUp"));
+        mushroomClip = getClip(loadAudio("superMushroom"));
+        deathClip = getClip(loadAudio("marioDies"));
+        errorClip = getClip(loadAudio("error"));
     }
 
     private AudioInputStream loadAudio(String url) {
@@ -56,52 +74,43 @@ public class SoundManager {
     }
 
     public void playJump() {
-        Clip clip = getClip(loadAudio("jump"));
-        clip.start();
+        jumpClip.start();
 
     }
 
     public void playCoin() {
-        Clip clip = getClip(loadAudio("coin"));
-        clip.start();
+        coinClip.start();
 
     }
 
     public void playFireball() {
-        Clip clip = getClip(loadAudio("fireball"));
-        clip.start();
+        fireballClip.start();
 
     }
 
     public void playGameOver() {
-        Clip clip = getClip(loadAudio("gameOver"));
-        clip.start();
+        gameOverClip.start();
 
     }
 
     public void playStomp() {
-        Clip clip = getClip(loadAudio("stomp"));
-        clip.start();
+        stompClip.start();
 
     }
 
     public void playOneUp() {
-        Clip clip = getClip(loadAudio("oneUp"));
-        clip.start();
+        oneUpClip.start();
 
     }
 
     public void playSuperMushroom() {
 
-        Clip clip = getClip(loadAudio("superMushroom"));
-        clip.start();
+        mushroomClip.start();
 
     }
 
     public void playMarioDies() {
-
-        Clip clip = getClip(loadAudio("marioDies"));
-        clip.start();
+        deathClip.start();
 
     }
 
@@ -110,7 +119,6 @@ public class SoundManager {
     }
     
     public void playError() {
-    	Clip clip = getClip(loadAudio("error"));
-    	clip.start();
+    	errorClip.start();
     }
 }
