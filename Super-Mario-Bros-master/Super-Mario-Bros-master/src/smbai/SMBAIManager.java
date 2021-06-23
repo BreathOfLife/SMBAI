@@ -94,7 +94,7 @@ public class SMBAIManager {
 		copyParents(); //Duplicate the parents to ensure the successful agents survive
 		pureHybBeast[1] = agentList.size();
 		System.out.println("Generating agents based on parent traits");
-		for (int i = agentList.size(); i < (int) (geneFlowFactor * agentQuantityPerGen); i++) {
+		for (int i = agentList.size(); i < (int) ((1 - geneFlowFactor) * agentQuantityPerGen); i++) {
 			agentList.add(selectParentTraits());
 		}
 		pureHybBeast[2] = agentList.size();
@@ -104,7 +104,7 @@ public class SMBAIManager {
 	}
 
 	private void geneFlow() {
-		int numIntroduced = (int) (geneFlowFactor * agentQuantityPerGen);
+		int numIntroduced = agentQuantityPerGen - agentList.size();
 		System.out.println("Introducing " + numIntroduced + " new agents to the environment");
 		createRandomAgents(numIntroduced);
 	}
@@ -202,11 +202,10 @@ public class SMBAIManager {
 				reGeneration();
 				activeAgentIndex = 0;
 				activeGenIndex++;
+				SaveData.save(pushFile);
 				if ((activeGenIndex >= totalGens) && totalGens != 0) {
-					SaveData.save(pushFile);
 	                System.exit(0);
 				}
-				SaveData.save(pushFile);
 			}
 			/*if (agentList.get(activeAgentIndex).getScore() != 0) {
 				System.out.println("Current agent has been previously tested with a score of: " + agentList.get(activeAgentIndex).getScore());
