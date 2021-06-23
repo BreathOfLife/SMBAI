@@ -107,7 +107,11 @@ public class Map {
         } catch (ConcurrentModificationException e) {
         	System.out.println("Concurrent Modification Exception in drawEnemies occured (in Map class)");
         }
-        drawFireballs(g2);
+        try {
+        	drawFireballs(g2);
+        } catch (ConcurrentModificationException e) {
+        	System.out.println("Concurrent Modification Exception in drawFireballs occured (in Map class)");
+        }
         drawMario(g2);
         endPoint.draw(g2);
     }
