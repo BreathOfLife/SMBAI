@@ -85,7 +85,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 		components.add(randomAgentsL);
 		components.add(randomAgentsC);
 		components.add(saveFilePullL);
-		for (String file : new File(System.getProperty("user.dir")).list()) {
+		for (String file : new File(System.getProperty("user.dir")).getParentFile().list()) {
 			try {
 				if (file.substring(file.length() - 6).equals(".smbai")) {
 					validPullFiles.add(file);
@@ -164,29 +164,25 @@ public class LauncherForm extends JFrame implements ActionListener{
                 SpringLayout.SOUTH, errorText);
         */
         c.setBackground(new Color(4,107,122));
-        
+
+		try {
         for (JComponent comp : components) {
-        	try {
-				if (comp.getClass().equals(saveFilePushT.getClass())) {
-	        		comp.setPreferredSize((new Dimension(100,25)));
-	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(25f));
-	        		comp.setForeground(new Color(255,109,249));
-	        	} else if (comp.getClass().equals(saveFilePullT.getClass())){
-	        		comp.setPreferredSize((new Dimension(150,25)));
-	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(20f));
-	        		comp.setForeground(new Color(255,109,249));
-	        	} else {
-	        		comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(20f));
-	        		comp.setForeground(new Color(99,48,122));
-	        	}
-				comp.setBackground(new Color(4,107,122));
-			} catch (FontFormatException | IOException e) {
-				e.printStackTrace();
+			if (comp.getClass().equals(saveFilePushT.getClass())) {
+				comp.setPreferredSize((new Dimension(100,25)));
+				comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("../Voyager.otf")).deriveFont(25f));
+				comp.setForeground(new Color(255,109,249));
+			} else if (comp.getClass().equals(saveFilePullT.getClass())){
+				comp.setPreferredSize((new Dimension(150,25)));
+				comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("../Voyager.otf")).deriveFont(20f));
+				comp.setForeground(new Color(255,109,249));
+			} else {
+				comp.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("../Voyager.otf")).deriveFont(20f));
+				comp.setForeground(new Color(99,48,122));
 			}
-        	c.add(comp);
+			comp.setBackground(new Color(4,107,122));
+			c.add(comp);
         }
-        try {
-			titleL.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("Voyager.otf")).deriveFont(40f));
+			titleL.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("../Voyager.otf")).deriveFont(75f));
 		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
 		}
@@ -221,6 +217,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 		} catch (StringIndexOutOfBoundsException e) {
 			saveFilePullA = saveFilePullA + ".smbai";
 		}
+		saveFilePullA = "../" + saveFilePullA;
 		if (overwriteA && !saveFilePullA.equals(".smbai")) {
 			saveFilePushA = saveFilePullA;
 		} else {
@@ -231,6 +228,7 @@ public class LauncherForm extends JFrame implements ActionListener{
 			} catch (StringIndexOutOfBoundsException e) {
 				saveFilePushA = saveFilePushA + ".smbai";
 			}
+			saveFilePushA = "../" + saveFilePushA;
 		}
 		
 	}
